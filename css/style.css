@@ -1,0 +1,22 @@
+body{
+  margin: 0;
+}
+#xx{
+  background: green;
+  display: block;
+  position: relative;
+}
+.actions{
+  position: absolute;
+  bottom: 0;
+  left :0;
+}
+#pen{
+  display: none;
+}
+.actions.x > #pen{
+  display: inline-block;
+}
+.actions.x > #eraser{
+  display: none;
+}
