@@ -1,17 +1,85 @@
-body{
+*{
   margin: 0;
+  padding: 0;
+}
+body{
+	overflow: hidden;
+}
+ul,ol{
+	list-style: none;
+}
+.icon {
+   width: 1em; height: 1em;
+   vertical-align: -0.15em;
+   fill: currentColor;
+   overflow: hidden;
 }
 #xx{
-  background: green;
+  background: #fff;
   display: block;
   position: relative;
 }
 .actions{
   position: absolute;
-  bottom: 0;
+  top: 0;
   left :0;
+  padding: 10px;
 }
-#pen{
+.actions svg{
+	width: 1.5em;
+	height: 1.5em;
+	margin: 5px;
+}
+.actions svg.active{
+	color: #000;
+	transform: scale(1.5);
+	transition: all 0.3s;
+}
+.colors{
+	position: fixed;
+	left: 12px;
+	top: 60px;
+}
+.colors li{
+	width: 20px;
+	height: 20px;
+	margin: 10px 0;
+}
+.colors li.active{
+	transform: scale(1.5);
+	transition: all 0.3s;
+}
+.colors .black{
+	background: black;
+}
+.colors .red{
+	background: red;
+}
+.colors .yellow{
+	background: yellow;
+}
+.colors .blue{
+	background: blue;
+}
+.size{
+	position: fixed;
+	right: 20px;
+	top: 10px;
+}
+.size li{
+	margin: 20px 0;
+}
+.size .thin{
+	height: 0;
+	width: 20px;
+	border-top: 3px solid #000;
+}
+.size .thick{
+	height: 0;
+	width: 20px;
+	border-top: 6px solid #000;
+}
+/*#pen{
   display: none;
 }
 .actions.x > #pen{
@@ -19,4 +87,4 @@ body{
 }
 .actions.x > #eraser{
   display: none;
-}
+}*/

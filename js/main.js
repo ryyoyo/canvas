@@ -1,5 +1,6 @@
 var canvas = document.getElementById('xx')
 var context = canvas.getContext('2d')
+var lineWidth = 5
 
 autoSetCanvasSize(canvas)
 
@@ -15,7 +16,7 @@ function drawCircle(x,y,radius){
 function drawLine(x1,y1,x2,y2){
   	context.beginPath();
   	context.moveTo(x1,y1);
-  	context.lineWidth = 5;
+  	context.lineWidth = lineWidth;
   	context.lineTo(x2,y2);
   	context.stroke()
   	context.closePath()
@@ -26,16 +27,103 @@ function drawLine(x1,y1,x2,y2){
 
 
 var eraserEnable = false
-var eraser = document.getElementById('eraser')
-eraser.onclick = function(){
-  	eraserEnable = true
-  	actions.className = 'actions x'
-}
+//var eraser = document.getElementById('eraser')
+// eraser.onclick = function(){
+//   	eraserEnable = true
+//   	actions.className = 'actions x'
+// }
+// pen.onclick = function(){
+//   	eraserEnable = false
+//   	actions.className = 'actions'
+// }
+
+color_map = {'red': red, 'yellow': yellow, 'blue': blue}
+
 pen.onclick = function(){
-  	eraserEnable = false
-  	actions.className = 'actions'
+	eraserEnable = false
+	pen.classList.add('active')
+	eraser.classList.remove('active')
+	var nowColor = pen.style.color
+	color_map[nowColor].classList.add('active');
+}
+eraser.onclick = function(){
+	eraserEnable = true
+	eraser.classList.add('active')
+	pen.classList.remove('active')
+	color_map[nowColor].classList.remove('active')
+	// yellow.classList.remove('active')
+	// blue.classList.remove('active')
+	// red.classList.remove('active')
+}
+clear.onclick = function(){
+	context.clearRect(0,0,canvas.width,canvas.height)
+}
+save.onclick = function(){
+	var url = canvas.toDataURL('img/png')
+	var a = document.createElement('a')
+	document.body.appendChild(a)
+	a.href = url
+	a.download = 'my picture'
+	a.target = '_blank'
+	a.click()
 }
 
+
+
+function x(color){
+	var colorB = document.getElementById(color)
+	var li = document.getElementsByTagName('li')
+	context.strokeStyle = color
+	pen.style.color = color
+	//red.classList.add('active')
+	//yellow.classList.remove('active')
+	//blue.classList.remove('active')
+	console.log(colorB);
+	for (var i = li.length - 1; i >= 0; i--) {
+		li[i].classList.remove('active');
+	}
+	//c.classList.remove('active')
+	colorB.classList.add('active')
+	pen.onclick()
+}
+
+black.onclick = function(){x('black')}
+red.onclick = function(){x('red')}
+yellow.onclick = function(){x('yellow')}
+blue.onclick = function(){x('blue')}
+// red.onclick = function(){
+// 	context.strokeStyle = 'red'
+// 	pen.style.color = 'red'
+// 	red.classList.add('active')
+// 	yellow.classList.remove('active')
+// 	blue.classList.remove('active')
+// 	pen.onclick()
+// }
+// yellow.onclick = function(){
+// 	context.strokeStyle = 'yellow'
+// 	pen.style.color = 'yellow'
+// 	yellow.classList.add('active')
+// 	red.classList.remove('active')
+// 	blue.classList.remove('active')
+// 	pen.onclick()
+// }
+// blue.onclick = function(){
+// 	context.strokeStyle = 'blue'
+// 	pen.style.color = 'blue'
+// 	blue.classList.add('active')
+// 	yellow.classList.remove('active')
+// 	red.classList.remove('active')
+// 	pen.onclick()
+// }
+
+
+
+thin.onclick = function(){
+	lineWidth = 5
+}
+thick.onclick = function(){
+	lineWidth = 10
+}
 
 
 //封装
