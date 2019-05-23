@@ -5,15 +5,14 @@ var lineWidth = 5
 autoSetCanvasSize(canvas)
 
 listenToMouse(canvas)
+// drawLine(100,300,200,200)
 
-
-
-function drawCircle(x,y,radius){
+function drawCircle(x,y,radius){ //画圆圈
   	context.beginPath()
   	context.arc(x,y,radius,0,Math.PI*2)
   	context.fill()
 }
-function drawLine(x1,y1,x2,y2){
+function drawLine(x1,y1,x2,y2){ //画线条
   	context.beginPath();
   	context.moveTo(x1,y1);
   	context.lineWidth = lineWidth;
@@ -37,7 +36,7 @@ var eraserEnable = false
 //   	actions.className = 'actions'
 // }
 
-color_map = {'red': red, 'yellow': yellow, 'blue': blue}
+color_map = {'red': red, 'yellow': yellow, 'blue': blue, 'black': black}
 
 pen.onclick = function(){
 	eraserEnable = false
@@ -55,9 +54,11 @@ eraser.onclick = function(){
 	// blue.classList.remove('active')
 	// red.classList.remove('active')
 }
+// 清屏
 clear.onclick = function(){
 	context.clearRect(0,0,canvas.width,canvas.height)
 }
+// 保存画布
 save.onclick = function(){
 	var url = canvas.toDataURL('img/png')
 	var a = document.createElement('a')
@@ -82,7 +83,6 @@ function x(color){
 	for (var i = li.length - 1; i >= 0; i--) {
 		li[i].classList.remove('active');
 	}
-	//c.classList.remove('active')
 	colorB.classList.add('active')
 	pen.onclick()
 }
@@ -99,23 +99,6 @@ blue.onclick = function(){x('blue')}
 // 	blue.classList.remove('active')
 // 	pen.onclick()
 // }
-// yellow.onclick = function(){
-// 	context.strokeStyle = 'yellow'
-// 	pen.style.color = 'yellow'
-// 	yellow.classList.add('active')
-// 	red.classList.remove('active')
-// 	blue.classList.remove('active')
-// 	pen.onclick()
-// }
-// blue.onclick = function(){
-// 	context.strokeStyle = 'blue'
-// 	pen.style.color = 'blue'
-// 	blue.classList.add('active')
-// 	yellow.classList.remove('active')
-// 	red.classList.remove('active')
-// 	pen.onclick()
-// }
-
 
 
 thin.onclick = function(){
@@ -141,68 +124,75 @@ function autoSetCanvasSize(canvas){
     	canvas.height = pageHeight
   }
 }
+// 监听鼠标
 function listenToMouse(canvas){
-  	var using = false
-  	var lastPoint = {
-  	  	x:undefined,
-  	  	y:undefined
-  	}
-  	if(document.body.ontouchstart !== undefined){
-  		//触屏
-  		canvas.ontouchstart = function(a){
-  		var x = a.touches[0].clientX
-  	  	var y = a.touches[0].clientY
-  	  	using = true
-  	  	if(eraserEnable){
-  	  	  	context.clearRect(x-5,y-5,10,10)
-  	  	}else{
-  	  	  	lastPoint = {'x':x,'y':y}
-  	  	}
+	var using = false
+	var lastPoint = {
+	  	x:undefined,
+	  	y:undefined
 	}
-	canvas.ontouchmove = function(a){
-		var x = a.touches[0].clientX
-  		var y = a.touches[0].clientY
-  		if(!using){return}
-  		if(eraserEnable){
-  			context.clearRect(x-5,y-5,10,10)
-  		}else{
-  		   	var newPoint = {'x':x,'y':y}
-  		   	drawLine(lastPoint.x,lastPoint.y,newPoint.x,newPoint.y)
-  		   	lastPoint = newPoint
-  		}
+  // 判断使用的设备
+	if(document.body.ontouchstart !== undefined){
+		//触屏
+		canvas.ontouchstart = function(a){
+	  		var x = a.touches[0].clientX
+	  	  	var y = a.touches[0].clientY
+	  	  	using = true
+	  	  	if(eraserEnable){
+	  	  	  context.clearRect(x-5,y-5,10,10)
+	  	  	}else{
+	  	  	  lastPoint = {'x':x,'y':y}
+	          drawCircle(x,y,lineWidth/2.2)
+	  	  	}
+	  	}
+  		canvas.ontouchmove = function(a){
+	  		var x = a.touches[0].clientX
+			var y = a.touches[0].clientY
+			if(!using){return}
+			if(eraserEnable){
+				context.clearRect(x-5,y-5,10,10)
+			}else{
+			   	var newPoint = {'x':x,'y':y}
+			   	drawLine(lastPoint.x,lastPoint.y,newPoint.x,newPoint.y)
+	      		drawCircle(x,y,lineWidth/2.2)
+			   	lastPoint = newPoint
+			}
+		}
+		canvas.ontouchend = function(){
+			using = false
+		}
+	}else{//非触屏
+  		// 按下鼠标
+	  	canvas.onmousedown = function(a){
+		  	var x = a.clientX
+		  	var y = a.clientY
+		  	using = true
+		  	if(eraserEnable){
+		  	  	context.clearRect(x-5,y-5,10,10)
+		  	}else{
+		  	  	lastPoint = {'x':x,'y':y}
+	          drawCircle(x,y,lineWidth/2.2)
+		  	}
+	  	}
+	    // 移动鼠标
+	  	canvas.onmousemove = function(a){
+		    var x = a.clientX
+		    var y = a.clientY
+		  	if(!using){return}
+		  	if(eraserEnable){
+		      	context.clearRect(x-5,y-5,10,10)
+		  	}else{
+		      	var newPoint = {'x':x,'y':y}
+	          	drawCircle(x,y,lineWidth/2.2)
+		      	drawLine(lastPoint.x,lastPoint.y,newPoint.x,newPoint.y)
+		      	lastPoint = newPoint
+		  	}
+		}
+		// 松开鼠标
+		canvas.onmouseup = function(a){
+		   	using = false
+		}
 	}
-	canvas.ontouchend = function(){
-  		using = false
-	}
-  }else{
-  	//非触屏
-  	canvas.onmousedown = function(a){
-  	  	var x = a.clientX
-  	  	var y = a.clientY
-  	  	using = true
-  	  	if(eraserEnable){
-  	  	  	context.clearRect(x-5,y-5,10,10)
-  	  	}else{
-  	  	  	lastPoint = {'x':x,'y':y}
-  	  	}
-  	}
-
-  	canvas.onmousemove = function(a){
-  		    var x = a.clientX
-  		    var y = a.clientY
-  		  	if(!using){return}
-  		  	if(eraserEnable){
-  		      	context.clearRect(x-5,y-5,10,10)
-  		  	}else{
-  		      	var newPoint = {'x':x,'y':y}
-  		      	drawLine(lastPoint.x,lastPoint.y,newPoint.x,newPoint.y)
-  		      	lastPoint = newPoint
-  		  	}
-  		}
-  		canvas.onmouseup = function(a){
-  		   	using = false
-  		}
-  	}
 }
 
 

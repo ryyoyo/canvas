@@ -17,10 +17,12 @@ ul,ol{
 #xx{
   background: #fff;
   display: block;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 .actions{
-  position: absolute;
+  position: fixed;
   top: 0;
   left :0;
   padding: 10px;
@@ -72,12 +74,12 @@ ul,ol{
 .size .thin{
 	height: 0;
 	width: 20px;
-	border-top: 3px solid #000;
+	border-top: 5px solid #000;
 }
 .size .thick{
 	height: 0;
 	width: 20px;
-	border-top: 6px solid #000;
+	border-top: 10px solid #000;
 }
 /*#pen{
   display: none;
