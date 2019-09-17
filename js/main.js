@@ -37,12 +37,12 @@ var eraserEnable = false
 // }
 
 color_map = {'red': red, 'yellow': yellow, 'blue': blue, 'black': black}
+var nowColor = pen.style.color
 
 pen.onclick = function(){
 	eraserEnable = false
 	pen.classList.add('active')
 	eraser.classList.remove('active')
-	var nowColor = pen.style.color
 	color_map[nowColor].classList.add('active');
 }
 eraser.onclick = function(){
@@ -75,6 +75,7 @@ function x(color){
 	var colorB = document.getElementById(color)
 	var li = document.getElementsByTagName('li')
 	context.strokeStyle = color
+	context.fillStyle = color
 	pen.style.color = color
 	//red.classList.add('active')
 	//yellow.classList.remove('active')
